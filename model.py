@@ -8,9 +8,19 @@ with open('./data/driving_log.csv') as csvfile:
     for line in reader:
         samples_.append(line)
 
+# samples_2 = []
+# with open('./udacity_data/driving_log.csv') as csvfile:
+#     reader = csv.reader(csvfile, skipinitialspace=True)
+#     for line in reader:
+#         samples_2.append(line)
+
 samples = []
 for line in samples_[1:]:
     samples.append(line)
+
+samples2 = []
+for line in samples_2[1:]:
+    samples2.append(line)
 
 
 from sklearn.model_selection import train_test_split
@@ -47,12 +57,18 @@ def generator(samples, batch_size=32):
             angles = []
             for line in batch_samples:
                 center_angle = float(line[3])
-                # if center_angle == 0:
-                #     continue
+                if center_angle == 0:
+                    continue
+                # for i in range(3):
+                #     name = 'data/IMG/'+line[i].split('/')[-1]
+                #     image = crop_resize(.imread(name))
+                #     images.append(image)
 
+                # For windows system
                 for i in range(3):
-
-                    name = 'data/IMG/'+line[i].split('/')[-1]
+                    token = line[i].split('\\')
+                    # token.encode("string_escape").split('\\')
+                    name = 'data/IMG/'+token[-1]
                     image = crop_resize(mpimg.imread(name))
                     images.append(image)
 
@@ -64,14 +80,21 @@ def generator(samples, batch_size=32):
                 angles.append(right_angle)
 
                 # Flip image on horizontal axis
-                if abs(center_angle) > 0.33:
+                flip = random.randint(0,1)
+                if flip == 1:
+                    # For windows system
                     for i in range(3):
-
-                        name = 'data/IMG/'+line[i].split('/')[-1]
-                        image = cv2.flip(image, 1)
+                        token = line[i].split('\\')
+                        # token.encode("string_escape").split('\\')
+                        name = 'data/IMG/'+token[-1]
                         image = crop_resize(mpimg.imread(name))
-
                         images.append(image)
+
+                    # for i in range(3):
+                    #     name = 'data/IMG/'+line[i].split('/')[-1]
+                    #     image = crop_resize(mpimg.imread(name))
+                    #     image = cv2.flip(image, 1)
+                    #     images.append(image)
 
                     correction = 0.2
                     center_angle = float(line[3]) * -1
@@ -95,11 +118,18 @@ def generator_val(samples, batch_size=32):
             images = []
             angles = []
             for line in batch_samples:
-                for i in range(3):
+                # for i in range(3):
+                #     name = 'data/IMG/'+line[i].split('/')[-1]
+                #     center_image = crop_resize(mpimg.imread(name))
+                #     images.append(center_image)
 
-                    name = 'data/IMG/'+line[i].split('/')[-1]
-                    center_image = crop_resize(mpimg.imread(name))
-                    images.append(center_image)
+                # For windows system
+                for i in range(3):
+                    token = line[i].split('\\')
+                    # token.encode("string_escape").split('\\')
+                    name = 'data/IMG/'+token[-1]
+                    image = crop_resize(mpimg.imread(name))
+                    images.append(image)
 
                 correction = 0.2
                 center_angle = float(line[3])
@@ -112,12 +142,12 @@ def generator_val(samples, batch_size=32):
             yield sklearn.utils.shuffle(X_train, y_train)
 
 # compile and train the model using the generator function
-train_generator = generator(train_samples, batch_size=len(train_samples))
+train_generator = generator(train_samples, batch_size=64)
 validation_generator = generator_val(validation_samples, batch_size=32)
 
 for i in range(1):
     gen = next(train_generator)
-    print(len(gen[0][0]))
+    print(len(gen[0]))
 
 input_shape = (64,64,3)  # Trimmed image format
 
@@ -147,9 +177,8 @@ adam = Adam(lr = 0.0001)
 model.compile(optimizer= adam, loss='mse', metrics=['accuracy'])
 model.summary()
 
-model.fit_generator(train_generator, samples_per_epoch= \
-            math.ceil(len(train_samples)*3), validation_data=validation_generator, \
-            nb_val_samples=len(validation_samples), nb_epoch=1)
+model.fit_generator(train_generator, samples_per_epoch=20000, validation_data=validation_generator, \
+            nb_val_samples=len(validation_samples), nb_epoch=100)
 
 print("Done with training. ")
 

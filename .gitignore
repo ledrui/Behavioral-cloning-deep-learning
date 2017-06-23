@@ -1,5 +1,6 @@
-data/
+data/IMG
 __pycash__/
 driving-data/
-.vs 
+.vs
 basic_model/
+udacity_data/IMG
