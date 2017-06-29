@@ -88,16 +88,17 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (model.py lines 168-199) consisted of a convolution neural network with the following layers and layer sizes ...
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture
 
 ![alt text][image1]
+
 1. 5 convolutional2d layers increase the feature depth (see image for hyperparameters).
-1. Relu activations find non-linear relationships between layers.
+1. elu activations find non-linear relationships between layers.
 1. Three fully connected layers added at end, eventually outputing a steering angle.
 1. Using adam optimizer, mean squared error minimized (distance from predicted steering angle and actual).
-1. 48k images (after processing) trained for 15 epochs with batch size 128 at .001, then for a couple more at .0001
+1. 48k images (after processing) trained for 10 epochs with batch size 128 at .001, then for a couple more at .0001
 
 ####3. Creation of the Training Set & Training Process
 
