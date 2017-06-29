@@ -27,7 +27,7 @@ for line in samples_[1:]:
 
 from sklearn.model_selection import train_test_split
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
-print("{} Training data and {} Val data".format(len(train_samples), len(validation_samples)))
+# print("{} total data {} Training data and {} Val data".format(len(samples), len(train_samples), len(validation_samples)))
 
 # Crop image to remove the sky and driving deck, resize to 64x64 dimension
 def crop_resize(image):
