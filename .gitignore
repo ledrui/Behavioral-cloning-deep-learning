@@ -4,3 +4,4 @@ driving-data/
 .vs
 basic_model/
 udacity_data/IMG
+*.h5

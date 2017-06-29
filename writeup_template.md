@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./images/Nvidia_model.png "Nvidia model"
-[image2]: ./images/placeholder.png "Grayscaling"
-[image3]: ./images/placeholder_small.png "Recovery Image"
-[image4]: ./images/placeholder_small.png "Recovery Image"
+[image2]: ./images/center.jpg "Grayscaling"
+[image3]: ./images/left.jpg "Recovery Image"
+[image4]: ./images/right.jpg "Recovery Image"
 [image5]: ./images/placeholder_small.png "Recovery Image"
-[image6]: ./images/placeholder_small.png "Normal Image"
-[image7]: ./images/placeholder_small.png "Flipped"
+[image6]: ./images/sample_6.jpg "Normal Image"
+[image7]: ./images/sample_7.jpg "Flipped"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
