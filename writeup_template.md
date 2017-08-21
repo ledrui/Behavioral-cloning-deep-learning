@@ -57,6 +57,7 @@ The model.py file contains the code for training and saving the convolution neur
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 24 and 64 (model.py lines 168-199)
 
 The model includes ELU layers to introduce nonlinearity (code line 173, 175, 177, 179, 181), and the data is normalized in the model using a Keras lambda layer (code line 172).
+The Model also include 3 dropout after each dense layer
 
 ####2. Attempts to reduce overfitting in the model
 
@@ -80,7 +81,13 @@ For details about how I created the training data, see the next section.
 
 The overall strategy for deriving a model architecture was to build the model incrementally.
 
-My first step was to use a convolution neural network model similar to the NVIDIA end-to-end model, I thought this model might be appropriate because it shows great results on driving on actual car, also I found it simple to understand.
+My first step was to use a convolution neural network model similar to the NVIDIA end-to-end model with some modification I found better suited for this case sach as adding dropputs. Also, my model has 5 dense layers. I thought this model might be appropriate because it shows great results on driving on actual car, also I found it simple to understand.
+
+I've added the following adjustments to the model. 
+
+- I used Lambda layer to normalized input images to avoid saturation and make gradients work better.
+- I've added three dropout layers to avoid overfitting after the convolution layers.
+- I've also included ELU for activation function for every layer except for the output layer for non-linearity.
 
 The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track or not driving right, to improve the driving behavior in these cases, I retrained the model on recovery data.
 
@@ -89,14 +96,30 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 ####2. Final Model Architecture
 
 The final model architecture (model.py lines 168-199) consisted of a convolution neural network with the following layers and layer sizes ...
+                            
 
-Here is a visualization of the architecture
+In the end, the model looks like as follows:
 
-![alt text][image1]
+- Image normalization
+- Convolution: 5x5, filter: 24, strides: 2x2, activation: ELU
+- Convolution: 5x5, filter: 36, strides: 2x2, activation: ELU
+- Convolution: 5x5, filter: 48, strides: 2x2, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Convolution: 3x3, filter: 64, strides: 1x1, activation: ELU
+- Flatten()
+- Fully connected: neurons: 80, activation: ELU
+- Drop out (0.5)
+- Fully connected: neurons: 40, activation: ELU
+- Drop out (0.5)
+- Fully connected: neurons: 16, activation: ELU
+- Drop out (0.5)
+- Fully connected: neurons: 10, activation: ELU
+- Fully connected: neurons:   1 (output)
+
 
 1. 5 convolutional2d layers increase the feature depth (see image for hyperparameters).
 1. elu activations find non-linear relationships between layers.
-1. Three fully connected layers added at end, eventually outputing a steering angle.
+1. five fully connected layers added at end, eventually outputing a steering angle.
 1. Using adam optimizer, mean squared error minimized (distance from predicted steering angle and actual).
 1. 48k images (after processing) trained for 10 epochs with batch size 128 at .001, then for a couple more at .0001
 
@@ -126,3 +149,6 @@ Before collection I had 6174 data point, after the collection process, I had 185
 I finally randomly shuffled the data set and put 20% of the data into a validation set.
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 10 maybe less as evidenced the validation accuracy stopped improving after 10 epoch. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
+UPDATE:
+My first training pipeline wasn't able to keep the car on the raod for an entire lap. To solve that I gahered better data and more data, mostly recovery from the road side.   

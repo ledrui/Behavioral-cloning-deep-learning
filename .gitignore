@@ -1,5 +1,6 @@
 data/IMG
 __pycashe__/
+test_models/
 driving-data/
 .vs
 basic_model/

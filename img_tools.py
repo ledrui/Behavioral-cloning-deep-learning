@@ -18,7 +18,7 @@ def contr_img(img, s=1.0):
     m=127.0*(1.0-s)
     return lin_img(img, s, m)
 
-#Random brightness
+#Random brightness 
 def bright_img(img):
     img = cv2.cvtColor(img,cv2.COLOR_RGB2HSV)
     img[:,:,2] = img[:,:,2]*(0.2+np.random.uniform())
